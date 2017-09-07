@@ -9,6 +9,7 @@
     <email>alice@aghstrategies.com</email>
   </maintainer>
   <urls>
+    <url desc="documentation">https://github.com/aghstrategies/com.aghstrategies.submitbuttontext</url>
     <url desc="Licensing">http://www.gnu.org/licenses/agpl-3.0.html</url>
   </urls>
   <releaseDate>2017-08-29</releaseDate>

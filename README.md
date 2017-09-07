@@ -7,4 +7,4 @@ The submit button text on CiviCRM contribution pages defaults to "Confirm Contri
 
 ![Button on the Contribution Page with Text as Set on "Title and Settings tab"](img/buttonOnFrontEndForm.png)
 
-Common examples of alternate text for the button: "Submit", "Next", "Join" etc.
+Common examples of alternate text for the button: "Submit", "Next", and for Contribution Pages being used for membership registration "Join" etc.

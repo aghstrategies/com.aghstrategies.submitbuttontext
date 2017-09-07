@@ -62,6 +62,8 @@ function submitbuttontext_civicrm_buildForm($formName, &$form) {
 
 /**
  * Implements hook_civicrm_postProcess().
+ *
+ * @link http://wiki.civicrm.org/confluence/display/CRMDOC/hook_civicrm_postProcess
  */
 function submitbuttontext_civicrm_postProcess($formName, &$form) {
   if ($formName == 'CRM_Contribute_Form_ContributionPage_Settings') {
@@ -80,7 +82,6 @@ function submitbuttontext_civicrm_postProcess($formName, &$form) {
         1 => $error,
       )));
     }
-    // print_r($buttonInfo); die();
     $contribPageId = $form->getVar('_id');
     $buttonInfoToUpdate = array();
     if (!empty($buttonInfo['values'][0]['submitbuttontext_buttontext'])) {
@@ -91,9 +92,9 @@ function submitbuttontext_civicrm_postProcess($formName, &$form) {
       $buttonInfoToUpdate[$contribPageId] = $form->_submitValues['buttontext'];
     }
 
-    // If there is no text for the button, check if it has been deleted and if so remove that page from the setting
+    // If there is no text for the button, check if it has been deleted and if so remove that page from the setting array
     else {
-      if (in_array($contribPageId, $buttonInfoToUpdate)) {
+      if (!empty($buttonInfoToUpdate[$contribPageId])) {
         unset($buttonInfoToUpdate[$contribPageId]);
       }
     }
