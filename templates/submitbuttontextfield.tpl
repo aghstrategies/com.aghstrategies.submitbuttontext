@@ -3,6 +3,6 @@
 <table class="deleteme">
   <tr class="crm-price-field-block-submitbuttontextfield">
     <td class="label">{$form.buttontext.label}</td>
-    <td class="content">{$form.buttontext.html}</td>
+    <td class="content">{$form.buttontext.html} <br><span class="description">This text will be displayed on the button to submit the contribution page.<br> If no value is entered the button text will default to 'Confirm Contribution'.</span></td>
   </tr>
 </table>

@@ -9,12 +9,12 @@ require_once 'submitbuttontext.civix.php';
  */
 function submitbuttontext_civicrm_buildForm($formName, &$form) {
   if ($formName == 'CRM_Contribute_Form_ContributionPage_Settings') {
+    $contribPageId = $form->getVar('_id');
     // Adding a field to set the the Submit button text on the backend
     $form->add('text', 'buttontext', ts('Submit Button Text'));
     CRM_Core_Resources::singleton()->addScriptFile('com.aghstrategies.submitbuttontext', 'js/backendformstyling.js');
 
-    //set default value
-    $defaults = array('buttontext' => 'Confirm Contribution');
+    // Look up if this form has a saved button text value
     try {
       $buttonInfo = civicrm_api3('Setting', 'get', array(
         'return' => "submitbuttontext_buttontext",
@@ -27,12 +27,10 @@ function submitbuttontext_civicrm_buildForm($formName, &$form) {
         1 => $error,
       )));
     }
-    //TODO this needs to be refactored
-    if (!empty($buttonInfo['values'][1]['submitbuttontext_buttontext']) && in_array($form->getVar('_id'), $buttonInfo['values'][1]['submitbuttontext_buttontext'])) {
-      $defaults['buttontext'] = 1;
+    if (!empty($buttonInfo['values'][1]['submitbuttontext_buttontext'][$contribPageId])) {
+      $defaults['buttontext'] = $buttonInfo['values'][1]['submitbuttontext_buttontext'][$contribPageId];
+      $form->setDefaults($defaults);
     }
-    $form->setDefaults($defaults);
-    // Assumes templates are in a templates folder relative to this file.
     $templatePath = realpath(dirname(__FILE__) . "/templates");
     CRM_Core_Region::instance('form-top')->add(array(
       'template' => "{$templatePath}/submitbuttontextfield.tpl",
@@ -54,8 +52,8 @@ function submitbuttontext_civicrm_buildForm($formName, &$form) {
         1 => $error,
       )));
     }
-    if (!empty($pageId) && !empty($buttonInfo['values']['submitbuttontext_buttontext'][$pageId])) {
-      CRM_Core_Resources::singleton()->addVars('submitbuttontext', array('buttontext' => $buttonInfo['values']['submitbuttontext_buttontext'][$pageId]));
+    if (!empty($pageId) && !empty($buttonInfo['values'][1]['submitbuttontext_buttontext'][$pageId])) {
+      CRM_Core_Resources::singleton()->addVars('submitbuttontext', array('buttontext' => $buttonInfo['values'][1]['submitbuttontext_buttontext'][$pageId]));
       CRM_Core_Resources::singleton()->addScriptFile('com.aghstrategies.submitbuttontext', 'js/changebuttontext.js');
     }
   }
@@ -71,6 +69,7 @@ function submitbuttontext_civicrm_postProcess($formName, &$form) {
     // Get existing Alternate Button Texts this should be an array where the key is the contrib page id and the value is the alternate text
     try {
       $buttonInfo = civicrm_api3('Setting', 'get', array(
+        'sequential' => 1,
         'return' => "submitbuttontext_buttontext",
       ));
     }
@@ -81,8 +80,12 @@ function submitbuttontext_civicrm_postProcess($formName, &$form) {
         1 => $error,
       )));
     }
+    // print_r($buttonInfo); die();
     $contribPageId = $form->getVar('_id');
-    $buttonInfoToUpdate = $buttonInfo['values']['submitbuttontext_buttontext'];
+    $buttonInfoToUpdate = array();
+    if (!empty($buttonInfo['values'][0]['submitbuttontext_buttontext'])) {
+      $buttonInfoToUpdate = $buttonInfo['values'][0]['submitbuttontext_buttontext'];
+    }
     // If text for the button has been submitted
     if (!empty($form->_submitValues['buttontext'])) {
       $buttonInfoToUpdate[$contribPageId] = $form->_submitValues['buttontext'];
