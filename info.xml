@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<extension key="com.aghstrategies.submitbuttontext" type="module">
+  <file>submitbuttontext</file>
+  <name>Submit Button Text</name>
+  <description>Creates a setting to change the wording of the submit buttons for events, membership and contributions pages.</description>
+  <license>AGPL-3.0</license>
+  <maintainer>
+    <author>Alice Frumin</author>
+    <email>alice@aghstrategies.com</email>
+  </maintainer>
+  <urls>
+    <url desc="Licensing">http://www.gnu.org/licenses/agpl-3.0.html</url>
+  </urls>
+  <releaseDate>2017-08-29</releaseDate>
+  <version>1.0</version>
+  <develStage>alpha</develStage>
+  <compatibility>
+    <ver>4.7</ver>
+  </compatibility>
+  <civix>
+    <namespace>CRM/Submitbuttontext</namespace>
+  </civix>
+</extension>
